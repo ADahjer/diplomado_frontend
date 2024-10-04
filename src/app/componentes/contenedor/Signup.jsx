@@ -3,13 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 
 export const Signup = () => {
   const [formData, setFormData] = useState({
-    nombre: "",
-    apellido: "",
+    userName: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
+  const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -20,13 +19,22 @@ export const Signup = () => {
     }));
   };
 
+  const validatePassword = (password) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    return regex.test(password);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Verificar si las contraseñas coinciden
-    if (formData.password !== formData.confirmPassword) {
-      alert("Las contraseñas no coinciden");
+    // Verificar si la contraseña es segura
+    if (!validatePassword(formData.password)) {
+      setPasswordError(
+        "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial."
+      );
       return;
     }
+
+    setPasswordError(""); // Limpiar el error si la validación es exitosa
 
     try {
       const response = await fetch(
@@ -37,8 +45,7 @@ export const Signup = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            nombre: formData.nombre,
-            apellido: formData.apellido,
+            userName: formData.userName,
             email: formData.email,
             password: formData.password,
           }),
@@ -70,36 +77,22 @@ export const Signup = () => {
                 <h2 className="card-title text-center mb-4">Registro</h2>
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
-                    <label htmlFor="nombre" className="form-label">
-                      Nombre
+                    <label htmlFor="userName" className="form-label">
+                      UserName
                     </label>
                     <input
                       type="text"
                       className="form-control"
-                      id="nombre"
-                      name="nombre"
-                      value={formData.nombre}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="apellido" className="form-label">
-                      Apellido
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="apellido"
-                      name="apellido"
-                      value={formData.apellido}
+                      id="userName"
+                      name="userName"
+                      value={formData.userName}
                       onChange={handleChange}
                       required
                     />
                   </div>
                   <div className="mb-3">
                     <label htmlFor="email" className="form-label">
-                      Correo Electrónico
+                      Correo Electrónico o Usuario
                     </label>
                     <input
                       type="email"
@@ -124,20 +117,9 @@ export const Signup = () => {
                       onChange={handleChange}
                       required
                     />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="confirmPassword" className="form-label">
-                      Confirmar Contraseña
-                    </label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      value={formData.confirmPassword}
-                      onChange={handleChange}
-                      required
-                    />
+                    {passwordError && (
+                      <small className="text-danger">{passwordError}</small>
+                    )}
                   </div>
                   <div className="d-grid gap-2">
                     <button type="submit" className="btn btn-primary">
