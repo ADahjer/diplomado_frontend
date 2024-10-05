@@ -7,16 +7,16 @@ export const Inicio = () => {
   const [populares, setPopulares] = useState([]);
 
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products/")
+    fetch("https://api.asmithdahjer.online/v1/product")
       .then((res) => res.json())
       .then((data) => {
         setProductos(data);
-        // Suponiendo que los primeros 3 son destacados
+        // Filtrando para cada sección
         setDestacados(data.slice(0, 3));
-        // Filtrando productos en oferta (ejemplo, precio menor a 20)
-        setOfertas(data.filter((product) => product.price < 20));
-        // Suponiendo que los populares son los que tienen calificaciones altas
-        setPopulares(data.filter((product) => product.rating.rate > 4));
+        setOfertas(
+          data.filter((producto) => producto.discount > 0).slice(0, 3)
+        );
+        setPopulares(data.slice(6, 9));
       });
   }, []);
 
@@ -35,10 +35,10 @@ export const Inicio = () => {
                   <img
                     src={producto.image}
                     className="card-img-top"
-                    alt={producto.title}
+                    alt={producto.name}
                   />
                   <div className="card-body">
-                    <h5 className="card-title">{producto.title}</h5>
+                    <h5 className="card-title">{producto.name}</h5>
                     <p className="card-text">${producto.price}</p>
                     <a href="#" className="btn btn-primary">
                       Ver más
@@ -60,11 +60,18 @@ export const Inicio = () => {
                   <img
                     src={producto.image}
                     className="card-img-top"
-                    alt={producto.title}
+                    alt={producto.name}
                   />
                   <div className="card-body">
-                    <h5 className="card-title">{producto.title}</h5>
-                    <p className="card-text">${producto.price}</p>
+                    <h5 className="card-title">{producto.name}</h5>
+                    <p className="card-text">
+                      <span style={{ textDecoration: "line-through" }}>
+                        ${producto.price.toFixed(2)}
+                      </span>{" "}
+                      <span className="text-danger">
+                        ${(producto.price * (1 - producto.discount)).toFixed(2)}
+                      </span>
+                    </p>
                     <a href="#" className="btn btn-danger">
                       Comprar ahora
                     </a>
@@ -85,10 +92,10 @@ export const Inicio = () => {
                   <img
                     src={producto.image}
                     className="card-img-top"
-                    alt={producto.title}
+                    alt={producto.name}
                   />
                   <div className="card-body">
-                    <h5 className="card-title">{producto.title}</h5>
+                    <h5 className="card-title">{producto.name}</h5>
                     <p className="card-text">${producto.price}</p>
                     <a href="#" className="btn btn-primary">
                       Ver más
