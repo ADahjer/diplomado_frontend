@@ -11,9 +11,8 @@ function App() {
     <>
       <div>
         <BrowserRouter>
-        <Cabecera/>
-
-        <Ruteo/>
+          <Cabecera/>
+          <Ruteo/>
         </BrowserRouter>
       </div>
     </>

@@ -1,0 +1,71 @@
+.pago-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .campo {
+    margin-bottom: 15px;
+  }
+  
+  .campo label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .campo input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .boton-pago {
+    padding: 10px;
+    font-size: 1.2rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .boton-pago:hover {
+    background-color: #45a049;
+  }
+  
+  .exito, .fallo {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .exito h2, .fallo h2 {
+    font-size: 1.6rem;
+  }
+  
+  .exito p, .fallo p {
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
+  .fallo {
+    color: red;
+  }
+  
