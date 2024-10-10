@@ -2,7 +2,8 @@ import { useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { Ruteo } from "./app/utilidades/rutas/Ruteo";
 import { Cabecera } from "./app/componentes/contenedor/Cabecera";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { AuthProvider } from "./app/componentes/contenedor/Authcontext";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -10,10 +11,12 @@ function App() {
   return (
     <>
       <div>
-        <BrowserRouter>
-          <Cabecera/>
-          <Ruteo/>
-        </BrowserRouter>
+        <AuthProvider>
+          <BrowserRouter>
+            <Cabecera />
+            <Ruteo />
+          </BrowserRouter>
+        </AuthProvider>
       </div>
     </>
   );

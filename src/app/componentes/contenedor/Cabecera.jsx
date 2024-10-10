@@ -1,7 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
+import { useContext } from "react";
+import { AuthContext } from "./Authcontext";
 
 export const Cabecera = () => {
+  const { user, logout } = useContext(AuthContext); // Obtenemos user y logout del contexto
   return (
     <>
       <nav
@@ -43,16 +46,34 @@ export const Cabecera = () => {
                   <span className="badge bg-danger ms-1">3</span>
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/logeo">
-                  Login
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/registro">
-                  Sign Up
-                </NavLink>
-              </li>
+
+              {/* Si el usuario está autenticado, mostrar su nombre y el botón de "Cerrar sesión" */}
+              {user ? (
+                <>
+                  <li className="nav-item">
+                    <span className="nav-link">Hola, {user.name}</span>
+                  </li>
+                  <li className="nav-item">
+                    <button className="btn btn-link nav-link" onClick={logout}>
+                      Cerrar sesión
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <>
+                  {/* Si no está autenticado, mostrar los enlaces de Login y Sign Up */}
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/logeo">
+                      Login
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/registro">
+                      Sign Up
+                    </NavLink>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

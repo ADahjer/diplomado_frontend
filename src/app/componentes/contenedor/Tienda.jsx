@@ -16,10 +16,14 @@ export const Tienda = () => {
   const [descuentoActivo, setDescuentoActivo] = useState(false);
 
   useEffect( () => {
-     fetch("https://fakestoreapi.com/products/")
-      .then((res) => res.json())
-      .then((data) => setItem(data));
-  }, []);
+     fetch("https://fakestoreapi.com/products")
+     .then((res) => res.json())
+     .then((data) => {
+       setItem(data);  // Establecer los elementos con la respuesta de la API
+       console.log(data);  // Asegúrate de imprimir los datos aquí
+     })
+     .catch((error) => console.error("Error fetching products:", error));
+ }, []);
 
   function changingSrarchData(e) {
     setSearchValue(e.target.value);
