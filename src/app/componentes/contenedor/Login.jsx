@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "./Authcontext";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  const { login } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,22 +21,25 @@ export const Login = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        // Aquí puedes guardar el token en el localStorage o en el estado global
-        console.log("Inicio de sesión exitoso:", data);
-
-        // Redirigir a la página principal o dashboard
-        navigate("/");
-      } else {
-        alert("Error: " + data.message || "Error al iniciar sesión");
+      if (!response.ok) {
+        throw new Error("Credenciales inválidas o error de servidor");
       }
+
+      const data = await response.json();
+      localStorage.setItem("authToken", data.token); // Guardamos el token en localStorage
+
+      // Aquí llamamos la función login del contexto y pasamos los datos del usuario
+      login({ token: data.token });
+
+      // Redirigimos al usuario al inicio o la página principal
+      navigate("/");
+      console.log (data);
     } catch (error) {
-      console.error("Error en la petición:", error);
-      alert("Error al conectarse al servidor");
+      console.error("Error de inicio de sesión:", error);
+      alert("Error al iniciar sesión: " + error.message);
     }
   };
+
   return (
     <>
       <div className="container mt-5">

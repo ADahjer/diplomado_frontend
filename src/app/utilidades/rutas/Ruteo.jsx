@@ -6,6 +6,9 @@ import { Login } from "../../componentes/contenedor/Login";
 import { Signup } from "../../componentes/contenedor/Signup";
 import { SimulacionPago } from '../../componentes/contenedor/simulacionpago';
 import { useState } from "react";
+import  Perfil  from '../../componentes/contenedor/Perfil'
+import { ProtectedRoute } from "./ProtectedRoute";
+
 
 export const Ruteo = () => {
     const [addedItems, setAddedItem] = useState([]);
@@ -30,6 +33,11 @@ export const Ruteo = () => {
             <Route path="/logeo" element={<Login />} />
             <Route path="/registro" element={<Signup />} />
             <Route path="/simulacion-pago" element={<SimulacionPago />} />
+            <Route path="/perfil" element= {
+                <ProtectedRoute>
+                    <Perfil />
+                </ProtectedRoute>
+            }/>
         </Routes>
     );
 };
