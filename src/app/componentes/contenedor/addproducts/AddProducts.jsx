@@ -32,7 +32,7 @@ const AddProducts = ({ items, click, removeItem, setAddedItem }) => {
                 {items.map((item, i) => (
                   <tr key={item.id}>
                     <td>{i + 1}</td>
-                    <td>{item.title}</td>
+                    <td>{item.name}</td>
                     <td>${item.price}</td>
                     <td>{item.addNumber}</td>
                   </tr>

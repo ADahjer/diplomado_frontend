@@ -21,9 +21,9 @@ const Card = ({ product, addItem, removeItem, addedItems, descuento }) => {
       </div>
 
       <div>
-        <h2>{product.category}</h2>
-        <h4>{product.title}</h4>
-        <p>{product.description}</p>
+        <h2>{product.categories}</h2>
+        <h4>{product.name}</h4>
+        
       </div>
       <div className="card-price-add">
         <span className="withOutDesc">

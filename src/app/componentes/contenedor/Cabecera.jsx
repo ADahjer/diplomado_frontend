@@ -40,7 +40,7 @@ export const Cabecera = () => {
               <li className="nav-item">
                 <NavLink className="nav-link" to="/carrito">
                   <FaShoppingCart />
-                  <span className="badge bg-danger ms-1">3</span>
+                
                 </NavLink>
               </li>
               <li className="nav-item">
