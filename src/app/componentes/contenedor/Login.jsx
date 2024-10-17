@@ -26,14 +26,23 @@ export const Login = () => {
       }
 
       const data = await response.json();
-      localStorage.setItem("authToken", data.token); // Guardamos el token en localStorage
+
+      // Guardamos la información del token en localStorage
+      localStorage.setItem("authToken", data.Token);
+
+      // Guardamos la información de si el usuario es admin
+      const isAdmin = data.Claims?.admin ? true : false;
+      localStorage.setItem("isAdmin", isAdmin);
 
       // Aquí llamamos la función login del contexto y pasamos los datos del usuario
-      login({ token: data.token });
+      login({ token: data.Token, role: isAdmin ? "admin" : "user" });
 
-      // Redirigimos al usuario al inicio o la página principal
-      navigate("/");
-      console.log (data);
+      // Redireccionamos basado en el rol
+      if (isAdmin) {
+        navigate("/admin"); // Redirige al panel de administrador si es admin
+      } else {
+        navigate("/"); // Redirige a la página principal si es usuario
+      }
     } catch (error) {
       console.error("Error de inicio de sesión:", error);
       alert("Error al iniciar sesión: " + error.message);

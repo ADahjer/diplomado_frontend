@@ -1,10 +1,14 @@
 import { NavLink } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "./Authcontext";
 
 export const Cabecera = () => {
   const { user, logout } = useContext(AuthContext); // Obtenemos user y logout del contexto
+
+  // Verificamos si el usuario es admin
+  const isAdmin = user && user.role === "admin";
+
   return (
     <>
       <nav
@@ -43,9 +47,17 @@ export const Cabecera = () => {
               <li className="nav-item">
                 <NavLink className="nav-link" to="/carrito">
                   <FaShoppingCart />
-                
                 </NavLink>
               </li>
+
+              {/* Mostrar el enlace de Admin solo si el usuario es admin */}
+              {isAdmin && (
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/admin">
+                    Admin
+                  </NavLink>
+                </li>
+              )}
 
               {/* Si el usuario está autenticado, mostrar su nombre y el botón de "Cerrar sesión" */}
               {user ? (

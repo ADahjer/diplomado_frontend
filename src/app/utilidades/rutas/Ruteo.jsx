@@ -8,6 +8,8 @@ import { SimulacionPago } from '../../componentes/contenedor/simulacionpago';
 import { useState } from "react";
 import  Perfil  from '../../componentes/contenedor/Perfil'
 import { ProtectedRoute } from "./ProtectedRoute";
+import { Admin } from "../../componentes/contenedor/Admin";
+import { ProtectedRouteAdmin } from "./ProtectedRouteAdmin";
 
 
 export const Ruteo = () => {
@@ -38,6 +40,11 @@ export const Ruteo = () => {
                     <Perfil />
                 </ProtectedRoute>
             }/>
+            <Route path="/admin" element={
+                <ProtectedRouteAdmin>
+                    <Admin/>
+                </ProtectedRouteAdmin>
+            } />
         </Routes>
     );
 };
