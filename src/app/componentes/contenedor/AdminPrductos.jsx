@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 
-export const AdminProductos = () => {
+export const AdminPrductos = () => {
   const [products, setProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null);
@@ -47,19 +47,22 @@ export const AdminProductos = () => {
     e.preventDefault();
 
     try {
+      const formData = new FormData();
+      formData.append("name", currentProduct.name);
+      formData.append("price", currentProduct.price);
+      formData.append("categories", currentProduct.categories);
+
       const response = await fetch(
         `https://api.asmithdahjer.online/v1/product/${currentProduct.id}`,
         {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(currentProduct),
+          body: formData, 
         }
       );
 
       if (response.ok) {
         const updatedProduct = await response.json(); // Obtiene el producto actualizado de la respuesta
+        console.log("Respuesta del servidor:", updatedProduct)
         // Actualiza la lista de productos en el estado
         setProducts(
           products.map((product) =>
@@ -141,7 +144,17 @@ export const AdminProductos = () => {
                   required
                 />
               </Form.Group>
-              {/* Agrega más campos aquí según sea necesario */}
+              {/* Campo de categorías */}
+              <Form.Group controlId="formProductCategories">
+                <Form.Label>Categorías</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="categories"
+                  value={currentProduct.categories || ""}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
               <Button variant="primary" type="submit">
                 Guardar Cambios
               </Button>

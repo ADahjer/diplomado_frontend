@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { AdminProductos } from "./AdminPrductos";
+import { AdminPrductos } from "./AdminPrductos";
 
 export const Admin = () => {
     const isAdmin = localStorage.getItem("isAdmin");
@@ -11,7 +11,7 @@ export const Admin = () => {
   return (
     <>
       <h1>Panel Administrativo</h1>
-      <AdminProductos />
+      <AdminPrductos />
     </>
   );
 };
