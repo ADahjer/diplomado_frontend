@@ -10,6 +10,10 @@ import  Perfil  from '../../componentes/contenedor/Perfil'
 import { ProtectedRoute } from "./ProtectedRoute";
 import { Admin } from "../../componentes/contenedor/Admin";
 import { ProtectedRouteAdmin } from "./ProtectedRouteAdmin";
+import { AdminCategorias } from "../../componentes/contenedor/AdminCategorias";
+import { AdminCarrito } from "../../componentes/contenedor/AdminCarrito"; 
+
+
 
 
 export const Ruteo = () => {
@@ -35,6 +39,8 @@ export const Ruteo = () => {
             <Route path="/logeo" element={<Login />} />
             <Route path="/registro" element={<Signup />} />
             <Route path="/simulacion-pago" element={<SimulacionPago />} />
+            <Route path="/categorias" element={<AdminCategorias />} />
+            <Route path="/carrito" element={<AdminCarrito />} />
             <Route path="/perfil" element= {
                 <ProtectedRoute>
                     <Perfil />
