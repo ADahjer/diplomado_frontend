@@ -12,6 +12,7 @@ export const AdminCategorias = () => {
       const response = await fetch("https://api.asmithdahjer.online/v1/category");
       const data = await response.json();
       setCategories(data);
+      
     };
 
     fetchCategories();
@@ -24,6 +25,7 @@ export const AdminCategorias = () => {
     });
     if (response.ok) {
       setCategories(categories.filter((category) => category.id !== id));
+     
     } else {
       console.error("Error al eliminar la categoría");
     }

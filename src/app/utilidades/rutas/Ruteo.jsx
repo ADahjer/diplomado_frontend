@@ -42,6 +42,7 @@ export const Ruteo = () => {
             <Route path="/categorias" element={<AdminCategorias />} />
             <Route path="/carrito" element={<AdminCarrito />} />
             <Route path="/perfil" element= {
+            
                 <ProtectedRoute>
                     <Perfil />
                 </ProtectedRoute>

@@ -1,33 +1,49 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Container, Row } from "react-bootstrap";
 
 export const AdminPrductos = () => {
   const [products, setProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [category, setCategory] = useState([]);
+
+  const filterProductsByCategory = (selectedCategory) => {
+    if (selectedCategory === "Categorias") {
+      setFilteredProducts(products);
+    } else {
+      const filtered = products.filter((product) =>
+        product.categories.includes(selectedCategory)
+      );
+      setFilteredProducts(filtered);
+    }
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await fetch(
-        "https://api.asmithdahjer.online/v1/product"
-      );
-      const data = await response.json();
-      setProducts(data);
+      try {
+        const response = await fetch("https://api.asmithdahjer.online/v1/product");
+        const data = await response.json();
+        setProducts(data);
+        setFilteredProducts(data);
+        const categoria = data.flatMap((product) => product.categories);
+        const categoriasUnicas = [...new Set(categoria)];
+        setCategory(categoriasUnicas);
+      } catch (error) {
+        console.error("Error al obtener productos:", error);
+      }
     };
-
     fetchProducts();
   }, []);
 
   const handleDelete = async (id) => {
     const response = await fetch(
       `https://api.asmithdahjer.online/v1/product/${id}`,
-      {
-        method: "DELETE",
-      }
+      { method: "DELETE" }
     );
     if (response.ok) {
-      // Actualiza la lista de productos
       setProducts(products.filter((product) => product.id !== id));
+      setFilteredProducts(filteredProducts.filter((product) => product.id !== id));
     } else {
       console.error("Error al eliminar el producto");
     }
@@ -45,37 +61,30 @@ export const AdminPrductos = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-
     try {
       const formData = new FormData();
       formData.append("name", currentProduct.name);
       formData.append("price", currentProduct.price);
       formData.append("categories", currentProduct.categories);
-
       const response = await fetch(
         `https://api.asmithdahjer.online/v1/product/${currentProduct.id}`,
-        {
-          method: "PUT",
-          body: formData, 
-        }
+        { method: "PUT", body: formData }
       );
-
       if (response.ok) {
-        const updatedProduct = await response.json(); // Obtiene el producto actualizado de la respuesta
-        console.log("Respuesta del servidor:", updatedProduct)
-        // Actualiza la lista de productos en el estado
+        const updatedProduct = await response.json();
         setProducts(
           products.map((product) =>
             product.id === updatedProduct.id ? updatedProduct : product
           )
         );
-        handleClose(); // Cierra el modal
-      } else {
-        console.error(
-          "Error al guardar los cambios",
-          response.status,
-          response.statusText
+        setFilteredProducts(
+          filteredProducts.map((product) =>
+            product.id === updatedProduct.id ? updatedProduct : product
+          )
         );
+        handleClose();
+      } else {
+        console.error("Error al guardar los cambios");
       }
     } catch (error) {
       console.error("Error saving changes:", error);
@@ -83,20 +92,27 @@ export const AdminPrductos = () => {
   };
 
   const handleChange = (e) => {
-    setCurrentProduct({
-      ...currentProduct,
-      [e.target.name]: e.target.value,
-    });
+    setCurrentProduct({ ...currentProduct, [e.target.name]: e.target.value });
   };
 
   return (
     <div>
       <h1>Lista de Productos</h1>
-      {products.length === 0 ? (
+      <Container>
+        <Row>
+          <Form.Select onChange={(e) => filterProductsByCategory(e.target.value)}>
+            <option>Categorias</option>
+            {category.map((categor) => (
+              <option key={categor}>{categor}</option>
+            ))}
+          </Form.Select>
+        </Row>
+      </Container>
+      {filteredProducts.length === 0 ? (
         <p>Cargando productos...</p>
       ) : (
         <ul>
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <li key={product.id}>
               <img
                 src={product.image}
@@ -115,8 +131,6 @@ export const AdminPrductos = () => {
           ))}
         </ul>
       )}
-
-      {/* Modal para Editar Producto */}
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Editar Producto</Modal.Title>
@@ -144,7 +158,6 @@ export const AdminPrductos = () => {
                   required
                 />
               </Form.Group>
-              {/* Campo de categorías */}
               <Form.Group controlId="formProductCategories">
                 <Form.Label>Categorías</Form.Label>
                 <Form.Control
