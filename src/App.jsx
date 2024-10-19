@@ -14,8 +14,8 @@ function App() {
       <div>
         <AuthProvider>
           <BrowserRouter>
-            <Cabecera />
-            <Ruteo />
+          <Cabecera />
+          <Ruteo />
           </BrowserRouter>
         </AuthProvider>
       </div>
